@@ -1,6 +1,7 @@
 package com.example.project
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -61,7 +62,6 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // 권한 확인 및 현재 위치 설정
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED &&
@@ -75,14 +75,29 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.setMinZoomPreference(11f)
 
-        // 기본 마커
         val location = LatLng(37.3392, 126.7870)
-        mMap.addMarker(MarkerOptions().position(location))
+
+        // 마커에 타이틀을 지정 (마커 구분용)
+        val marker = mMap.addMarker(
+            MarkerOptions().position(location).title("시흥 지역")
+        )
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11f))
 
         val bounds = LatLngBounds(southWest, northEast)
         mMap.setLatLngBoundsForCameraTarget(bounds)
+
+        // 마커 클릭 리스너 등록
+        mMap.setOnMarkerClickListener { clickedMarker ->
+            if (clickedMarker.title == "시흥 지역") {
+                val intent = Intent(this, Siheung::class.java) // 다음 화면으로 이동
+                intent.putExtra("marker_title", clickedMarker.title) // 필요 시 데이터 전달
+                startActivity(intent)
+            }
+            true  // 클릭 이벤트 소비
+        }
     }
+
 
     private fun requestLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(

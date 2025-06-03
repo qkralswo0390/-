@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="165dp"
-        android:layout_height="109dp"
-        app:srcCompat="@drawable/outline_accessibility_24"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:srcCompat="@drawable/intersect"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="280dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

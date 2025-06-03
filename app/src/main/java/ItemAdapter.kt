@@ -3,20 +3,32 @@ package com.example.project
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project.R
 
 class ItemAdapter(
+
     private val items: List<ListItem>,
     private val onItemClick: (ListItem) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
+
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleView: TextView = itemView.findViewById(R.id.item_title)
+        private val imageView: ImageView = itemView.findViewById(R.id.item_image)
 
         fun bind(item: ListItem) {
             titleView.text = item.title
+
+            if (item.imageResId != null) {
+                imageView.setImageResource(item.imageResId)
+                imageView.visibility = View.VISIBLE
+            } else {
+                imageView.visibility = View.GONE
+            }
+
             itemView.setOnClickListener {
                 onItemClick(item)
             }

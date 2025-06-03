@@ -20,7 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
-
 class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -34,9 +33,10 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // 툴바 설
+        // 툴바 설정
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -58,32 +58,16 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
             ListItem("매화동")
         )
 
-        val adapter = ItemAdapter(items) { item ->
+        val adapter = SimpleItemAdapter(items) { item ->
             when (item.title) {
-                "정왕동" -> {
-                    val intent = Intent(this, jeongwang::class.java)
-                    startActivity(intent)
-                }
-                "대야동" -> {
-                    val intent = Intent(this, daeya::class.java)
-                    startActivity(intent)
-                }
-                "신현동" -> {
-                    val intent = Intent(this, sinhyeon::class.java)
-                    startActivity(intent)
-                }
-                "은행동" -> {
-                    val intent = Intent(this, eunhaeng::class.java)
-                    startActivity(intent)
-                }
-                "매화동" -> {
-                    val intent = Intent(this, maehwa::class.java)
-                    startActivity(intent)
-                }
+                "정왕동" -> startActivity(Intent(this, jeongwang::class.java))
+                "대야동" -> startActivity(Intent(this, daeya::class.java))
+                "신현동" -> startActivity(Intent(this, sinhyeon::class.java))
+                "은행동" -> startActivity(Intent(this, eunhaeng::class.java))
+                "매화동" -> startActivity(Intent(this, maehwa::class.java))
             }
         }
         recyclerView.adapter = adapter
-
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -119,7 +103,6 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
                 } else {
                     Toast.makeText(this, "현재 위치는 시흥 지역 범위를 벗어났습니다.", Toast.LENGTH_SHORT).show()
 
-                    // 기본 중심 좌표를 시흥 중심으로 설정
                     val defaultLatLng = LatLng(37.3392, 126.7870)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 11f))
                 }
@@ -131,18 +114,16 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-
         // 마커 클릭 리스너 등록
         mMap.setOnMarkerClickListener { clickedMarker ->
             if (clickedMarker.title == "시흥 지역") {
-                val intent = Intent(this, jeongwang::class.java) // 다음 화면으로 이동
-                intent.putExtra("marker_title", clickedMarker.title) // 필요 시 데이터 전달
+                val intent = Intent(this, jeongwang::class.java)
+                intent.putExtra("marker_title", clickedMarker.title)
                 startActivity(intent)
             }
-            true  // 클릭 이벤트 소비
+            true
         }
     }
-
 
     private fun requestLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(

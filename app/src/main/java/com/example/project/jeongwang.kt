@@ -22,10 +22,10 @@ class jeongwang : AppCompatActivity() {
 
         // 1) 새로운 리스트 생성
         val newList = listOf(
-            ListItem("토비공원"),
-            ListItem("정왕역"),
-            ListItem("아파트 단지"),
-            ListItem("공원 산책로"),
+            ListItem("토비공원", R.drawable.smaple_image),
+            ListItem("정왕역", null),
+            ListItem("아파트 단지", null),
+            ListItem("공원 산책로", null),
         )
 
         // 2) 리사이클러뷰 레이아웃 매니저 설정

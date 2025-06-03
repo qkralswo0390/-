@@ -2,24 +2,27 @@ package com.example.project
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MotionEvent
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.example.project.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event?.action == MotionEvent.ACTION_DOWN) {
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, SecondActivity::class.java)
             startActivity(intent)
-            return true
-        }
-        return super.onTouchEvent(event)
+            finish()
+        }, 2000)
     }
+
 }

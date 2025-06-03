@@ -2,16 +2,13 @@ package com.example.project
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.project.databinding.ActivitySiheungBinding
-
-class Siheung : AppCompatActivity() {
+import com.example.project.databinding.ActivityDaeyaBinding
+class daeya : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivitySiheungBinding.inflate(layoutInflater)
+        val binding = ActivityDaeyaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 툴바 설

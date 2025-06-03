@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,17 +45,39 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val items = listOf(
-            ListItem("파일 1"),
-            ListItem("파일 2"),
-            ListItem("파일 3"),
-            ListItem("파일 4"),
-            ListItem("파일 5")
+            ListItem("정왕동"),
+            ListItem("대야동"),
+            ListItem("신현동"),
+            ListItem("은행동"),
+            ListItem("매화동")
         )
 
         val adapter = ItemAdapter(items) { item ->
-            Toast.makeText(this, "${item.title} 클릭됨", Toast.LENGTH_SHORT).show()
+            when (item.title) {
+                "정왕동" -> {
+                    val intent = Intent(this, jeongwang::class.java)
+                    startActivity(intent)
+                }
+                "대야동" -> {
+                    val intent = Intent(this, daeya::class.java)
+                    startActivity(intent)
+                }
+                "신현동" -> {
+                    val intent = Intent(this, sinhyeon::class.java)
+                    startActivity(intent)
+                }
+                "은행동" -> {
+                    val intent = Intent(this, eunhaeng::class.java)
+                    startActivity(intent)
+                }
+                "매화동" -> {
+                    val intent = Intent(this, maehwa::class.java)
+                    startActivity(intent)
+                }
+            }
         }
         recyclerView.adapter = adapter
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -90,7 +111,7 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         // 마커 클릭 리스너 등록
         mMap.setOnMarkerClickListener { clickedMarker ->
             if (clickedMarker.title == "시흥 지역") {
-                val intent = Intent(this, Siheung::class.java) // 다음 화면으로 이동
+                val intent = Intent(this, jeongwang::class.java) // 다음 화면으로 이동
                 intent.putExtra("marker_title", clickedMarker.title) // 필요 시 데이터 전달
                 startActivity(intent)
             }

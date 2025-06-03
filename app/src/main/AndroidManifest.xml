@@ -16,7 +16,22 @@
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
         <activity
-            android:name=".Siheung"
+            android:name=".maehwa"
+            android:exported="false" />
+        <activity
+            android:name=".eunhaeng"
+            android:exported="false" />
+        <activity
+            android:name=".sinhyeon"
+            android:exported="false" />
+        <activity
+            android:name=".daeya"
+            android:exported="false" />
+        <activity
+            android:name=".Daeya"
+            android:exported="false" />
+        <activity
+            android:name=".jeongwang"
             android:exported="false" />
 
         <meta-data

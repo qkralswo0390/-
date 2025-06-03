@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,19 +17,24 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+
 
 class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val southWest = LatLng(37.30, 126.70)  // 남서쪽 (시흥)
-    private val northEast = LatLng(37.38, 126.87)  // 북동쪽
+    private val southWest = LatLng(37.32, 126.68)  // 남서쪽 (시흥)
+    private val northEast = LatLng(37.48, 126.88)  // 북동쪽
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // 툴바 설
         setSupportActionBar(binding.toolbar)
@@ -85,28 +91,46 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
 
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
+            ) != PackageManager.PERMISSION_GRANTED ||
             ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            mMap.isMyLocationEnabled = true
+            requestLocationPermissions()
+            return
         }
 
+        mMap.isMyLocationEnabled = true
         mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.setMinZoomPreference(11f)
+        mMap.setMinZoomPreference(12f)
 
-        val location = LatLng(37.3392, 126.7870)
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                val currentLatLng = LatLng(location.latitude, location.longitude)
 
-        // 마커에 타이틀을 지정 (마커 구분용)
-        val marker = mMap.addMarker(
-            MarkerOptions().position(location).title("시흥 지역")
-        )
+                val bounds = LatLngBounds(southWest, northEast)
+                mMap.setLatLngBoundsForCameraTarget(bounds)
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11f))
+                if (bounds.contains(currentLatLng)) {
+                    mMap.addMarker(
+                        MarkerOptions().position(currentLatLng).title("현재 내 위치")
+                    )
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
+                } else {
+                    Toast.makeText(this, "현재 위치는 시흥 지역 범위를 벗어났습니다.", Toast.LENGTH_SHORT).show()
 
-        val bounds = LatLngBounds(southWest, northEast)
-        mMap.setLatLngBoundsForCameraTarget(bounds)
+                    // 기본 중심 좌표를 시흥 중심으로 설정
+                    val defaultLatLng = LatLng(37.3392, 126.7870)
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 11f))
+                }
+            } else {
+                Toast.makeText(this, "현재 위치를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+
+                val defaultLatLng = LatLng(37.3392, 126.7870)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 11f))
+            }
+        }
+
 
         // 마커 클릭 리스너 등록
         mMap.setOnMarkerClickListener { clickedMarker ->

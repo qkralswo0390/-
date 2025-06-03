@@ -14,7 +14,7 @@ class Siheung : AppCompatActivity() {
         val binding = ActivitySiheungBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 툴바 설정
+        // 툴바 설
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 활성화
         supportActionBar?.setHomeButtonEnabled(true)

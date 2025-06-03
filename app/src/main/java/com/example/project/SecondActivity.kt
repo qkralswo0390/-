@@ -31,7 +31,7 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         val binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 툴바 설정
+        // 툴바 설
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

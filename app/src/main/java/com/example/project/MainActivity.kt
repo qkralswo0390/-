@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, SecondActivity::class.java)
             startActivity(intent)

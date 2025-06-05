@@ -1,8 +1,12 @@
 package com.example.project
 
 import android.Manifest
+import android.R.attr.fillColor
+import android.R.attr.strokeColor
+import android.R.attr.strokeWidth
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +23,10 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.PolygonOptions
+import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonPolygonStyle
 
 class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -42,8 +50,7 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // 지도 프래그먼트 설정
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         // 리스트 데이터 설정
@@ -51,16 +58,31 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val items = listOf(
-            ListItem("정왕동"),
+            ListItem("거북섬동"),
+            ListItem("과림동"),
+            ListItem("군자동"),
+            ListItem("능곡동"),
             ListItem("대야동"),
+            ListItem("매화동"),
+            ListItem("목감동"),
+            ListItem("배곧1동"),
+            ListItem("배곧2동"),
+            ListItem("신천동"),
             ListItem("신현동"),
+            ListItem("연성동"),
+            ListItem("월곶동"),
             ListItem("은행동"),
-            ListItem("매화동")
+            ListItem("장곡동"),
+            ListItem("정왕1동"),
+            ListItem("정왕2동"),
+            ListItem("정왕3동"),
+            ListItem("정왕4동"),
+            ListItem("정왕본동")
         )
 
         val adapter = SimpleItemAdapter(items) { item ->
             when (item.title) {
-                "정왕동" -> startActivity(Intent(this, jeongwang::class.java))
+                "정왕1동" -> startActivity(Intent(this, jeongwang::class.java))
                 "대야동" -> startActivity(Intent(this, daeya::class.java))
                 "신현동" -> startActivity(Intent(this, sinhyeon::class.java))
                 "은행동" -> startActivity(Intent(this, eunhaeng::class.java))
@@ -72,6 +94,56 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        val layer = GeoJsonLayer(mMap, R.raw.sihueng, this)
+
+        mMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style)
+        )
+
+        for (feature in layer.features) {
+            val polygonStyle = GeoJsonPolygonStyle().apply {
+                strokeWidth = 8f
+            }
+
+            val fullName = feature.getProperty("행정동명") ?: ""
+            val dongName = fullName.split(" ").lastOrNull() ?: ""
+
+            polygonStyle.strokeColor = when (dongName) {
+                "거북섬동"   -> Color.rgb(139, 0, 0)
+                "과림동"     -> Color.rgb(0, 0, 139)
+                "군자동"     -> Color.rgb(0, 100, 0)
+                "능곡동"     -> Color.rgb(139, 69, 19)
+                "대야동"     -> Color.rgb(85, 107, 47)
+                "매화동"     -> Color.rgb(72, 61, 139)
+                "목감동"     -> Color.rgb(128, 0, 128)
+                "배곧1동"    -> Color.rgb(0, 139, 139)
+                "배곧2동"    -> Color.rgb(255, 140, 0)
+                "신천동"     -> Color.rgb(47, 79, 79)
+                "신현동"     -> Color.rgb(184, 134, 11)
+                "연성동"     -> Color.rgb(60, 179, 113)
+                "월곶동"     -> Color.rgb(199, 21, 133)
+                "은행동"     -> Color.rgb(25, 25, 112)
+                "장곡동"     -> Color.rgb(255, 69, 0)
+                "정왕1동"    -> Color.rgb(0, 0, 0)
+                "정왕2동"    -> Color.rgb(255, 0, 255)
+                "정왕3동"    -> Color.rgb(70, 130, 180)
+                "정왕4동"    -> Color.rgb(128, 128, 0)
+                "정왕본동"   -> Color.rgb(0, 255, 127)
+                else         -> Color.DKGRAY
+            }
+            feature.polygonStyle = polygonStyle
+        }
+
+        layer.addLayerToMap()
+
+        val siheungBounds = LatLngBounds(
+            LatLng(37.32, 126.68),
+            LatLng(37.48, 126.88)
+        )
+        mMap.setLatLngBoundsForCameraTarget(siheungBounds)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(37.40, 126.78), 12f))
+        mMap.uiSettings.isZoomControlsEnabled = true
 
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION
@@ -85,7 +157,6 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         mMap.isMyLocationEnabled = true
-        mMap.uiSettings.isZoomControlsEnabled = true
         mMap.setMinZoomPreference(12f)
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->

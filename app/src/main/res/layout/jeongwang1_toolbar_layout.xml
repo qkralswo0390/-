@@ -13,7 +13,7 @@
         android:id="@+id/current_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="정왕"
+        android:text="정왕1동"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#000000"/>
@@ -22,7 +22,7 @@
         android:id="@+id/sub_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="공원 · 5개 결과"
+        android:text="공원 · 4개 결과"
         android:textSize="14sp"
         android:textColor="#666666"/>
 

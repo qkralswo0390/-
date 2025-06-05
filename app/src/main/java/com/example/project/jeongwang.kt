@@ -1,45 +1,35 @@
 package com.example.project
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.project.databinding.ActivityJeongwangBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.example.project.databinding.ActivityJeongwang1Binding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonPolygonStyle
 
 class jeongwang : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private lateinit var binding: ActivityJeongwangBinding
-
-    private val southWest = LatLng(37.32, 126.68)  // 남서쪽 (시흥)
-    private val northEast = LatLng(37.48, 126.88)
-    private val siheungBounds = LatLngBounds(southWest, northEast)
-    private val siheungCenter = LatLng(37.40, 126.78)
+    private lateinit var binding: ActivityJeongwang1Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityJeongwangBinding.inflate(layoutInflater)
+        binding = ActivityJeongwang1Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) // 기본 타이틀 제거
 
-        val customView = layoutInflater.inflate(R.layout.toolbar_layout, null)
+        val customView = layoutInflater.inflate(R.layout.jeongwang1_toolbar_layout, null)
         binding.toolbar.addView(customView)
 
 // 뒤로가기 버튼
@@ -54,9 +44,9 @@ class jeongwang : AppCompatActivity(), OnMapReadyCallback {
         // 1) 새로운 리스트 생성
         val newList = listOf(
             ListItem("토비공원", R.drawable.intersect),
-            ListItem("정왕역", null),
-            ListItem("아파트 단지", null),
-            ListItem("공원 산책로", null),
+            ListItem("정왕역", R.drawable.intersect),
+            ListItem("아파트 단지", R.drawable.intersect),
+            ListItem("공원 산책로", R.drawable.intersect),
         )
 
         // 2) 리사이클러뷰 레이아웃 매니저 설정
@@ -70,34 +60,34 @@ class jeongwang : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val jeongwangPolygonPoints = listOf(
-            LatLng(37.3458, 126.7372),  // 서쪽
-            LatLng(37.3578, 126.7525),  // 북서
-            LatLng(37.3619, 126.7754),  // 북
-            LatLng(37.3571, 126.7982),  // 북동
-            LatLng(37.3432, 126.8059),  // 동
-            LatLng(37.3296, 126.7878),  // 남동
-            LatLng(37.3280, 126.7583),  // 남
-            LatLng(37.3360, 126.7394)   // 남서
+        mMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style)
         )
 
-        val jeongwangPolygon = mMap.addPolygon(
-            PolygonOptions()
-                .addAll(jeongwangPolygonPoints)
-                .strokeColor(Color.RED)
-                .strokeWidth(5f)
-                .fillColor(0x22FF0000) // 반투명 빨간색
-        ) // 빨간색 투명 배경
+        val layer = GeoJsonLayer(mMap, R.raw.jeongwang1dong_only, this)
+
+        for (feature in layer.features) {
+            val polygonStyle = GeoJsonPolygonStyle().apply {
+                strokeColor = Color.RED        // 경계선 색
+                strokeWidth = 7f               // 경계선 두께
+            }
+            feature.polygonStyle = polygonStyle
+        }
+
+        layer.addLayerToMap()
 
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.setMinZoomPreference(14f)
 
-        val jeongwangBounds = LatLngBounds(
-            LatLng(37.3280, 126.7372),  // 남서
-            LatLng(37.3619, 126.8059)   // 북동
+        val jeongwang1dong = LatLng(37.3365, 126.7335)
+
+        val bounds = LatLngBounds(
+            LatLng(37.32, 126.71),  // 남서
+            LatLng(37.35, 126.75)   // 북동
         )
-        mMap.setLatLngBoundsForCameraTarget(jeongwangBounds)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(37.345, 126.77), 14f))
+
+        mMap.setLatLngBoundsForCameraTarget(bounds)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jeongwang1dong, 14f))
     }
 
     override fun onSupportNavigateUp(): Boolean {

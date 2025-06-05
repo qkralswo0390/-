@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.project.databinding.ActivityEunhaengBinding
-import com.example.project.databinding.ActivityJeongwangBinding
+import com.example.project.databinding.ActivityJeongwang1Binding
 
 class eunhaeng : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

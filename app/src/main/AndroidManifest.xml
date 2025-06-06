@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
         <activity
+            android:name=".DongDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YouthParkActivity"
+            android:exported="false" />
+        <activity
             android:name=".maehwa"
             android:exported="false" />
         <activity

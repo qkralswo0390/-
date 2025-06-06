@@ -59,18 +59,14 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val items = listOf(
             ListItem("거북섬동"),
-            ListItem("과림동"),
             ListItem("군자동"),
             ListItem("능곡동"),
             ListItem("대야동"),
-            ListItem("매화동"),
             ListItem("목감동"),
             ListItem("배곧1동"),
             ListItem("배곧2동"),
             ListItem("신천동"),
-            ListItem("신현동"),
             ListItem("연성동"),
-            ListItem("월곶동"),
             ListItem("은행동"),
             ListItem("장곡동"),
             ListItem("정왕1동"),
@@ -81,13 +77,9 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         )
 
         val adapter = SimpleItemAdapter(items) { item ->
-            when (item.title) {
-                "정왕1동" -> startActivity(Intent(this, jeongwang::class.java))
-                "대야동" -> startActivity(Intent(this, daeya::class.java))
-                "신현동" -> startActivity(Intent(this, sinhyeon::class.java))
-                "은행동" -> startActivity(Intent(this, eunhaeng::class.java))
-                "매화동" -> startActivity(Intent(this, maehwa::class.java))
-            }
+            val intent = Intent(this, DongDetailActivity::class.java)
+            intent.putExtra("dongName", item.title)
+            startActivity(intent)
         }
         recyclerView.adapter = adapter
     }
@@ -188,7 +180,7 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         // 마커 클릭 리스너 등록
         mMap.setOnMarkerClickListener { clickedMarker ->
             if (clickedMarker.title == "시흥 지역") {
-                val intent = Intent(this, jeongwang::class.java)
+                val intent = Intent(this, DongDetailActivity::class.java)
                 intent.putExtra("marker_title", clickedMarker.title)
                 startActivity(intent)
             }

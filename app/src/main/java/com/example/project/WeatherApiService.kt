@@ -15,6 +15,7 @@ interface WeatherApiService {
         @Query("base_date") baseDate: String,
         @Query("base_time") baseTime: String,
         @Query("nx") nx: Int,
-        @Query("ny") ny: Int
+        @Query("ny") ny: Int,
+        @Query("_type") type: String = "json"
     ): Call<WeatherResponse>
 }

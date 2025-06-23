@@ -92,7 +92,6 @@ val parksByDong: Map<String, List<Park>> = mapOf(
         Park("은계중앙공원", LatLng(37.441445, 126.800305), R.drawable.intersect, address = "경기 시흥시 은행동 55", description = "놀이터, 벤치"),
         Park("웃터골공원", LatLng(37.44457, 126.801125), R.drawable.intersect, address = "경기 시흥시 은행동 600", description = "놀이터, 벤치"),
         Park("은행공원", LatLng(37.442524, 126.798573), R.drawable.intersect, address = "경기 시흥시 은행동 538-4", description = "놀이터, 벤치"),
-        Park("은행근린공원", LatLng(37.441638, 126.793978), R.drawable.intersect, address = "경기 시흥시 은행동 551", description = "놀이터, 벤치"),
         Park("오난산전망공원", LatLng(37.442107, 126.806472), R.drawable.intersect, address = "경기 시흥시 은행동 622", description = "놀이터, 벤치"),
         Park("은계호수공원", LatLng(37.444502, 126.807189), R.drawable.intersect, address = "경기 시흥시 은행동 601-150", description = "놀이터, 벤치"),
         Park("검바위하늘공원", LatLng(37.434054, 126.800038), R.drawable.intersect, address = "경기 시흥시 은행동 660", description = "놀이터, 벤치")
@@ -121,7 +120,7 @@ val parksByDong: Map<String, List<Park>> = mapOf(
         Park("하상공원", LatLng(37.391960, 126.814300), R.drawable.intersect, address = "경기 시흥시 하상동 372", description = "놀이터, 벤치"),
         Park("연꽃공원", LatLng(37.395886, 126.810959), R.drawable.intersect, address = "경기 시흥시 하상동 367", description = "놀이터, 벤치"),
         Park("샛말공원", LatLng(37.396032, 126.804400), R.drawable.intersect, address = "경기 시흥시 하중동 848", description = "놀이터, 벤치"),
-        Park("성마루공원", LatLng(37.395930, 126.804379), R.drawable.intersect, address = "경기 시흥시 하중동 880-2", description = "놀이터, 벤치"),
+        Park("성마루공원", LatLng(37.390926, 126.805560), R.drawable.intersect, address = "경기 시흥시 하중동 880-2", description = "놀이터, 벤치"),
         Park("관곡공원", LatLng(37.399719, 126.800639), R.drawable.intersect, address = "경기 시흥시 하중동 826-2", description = "놀이터, 벤치"),
         Park("연꽃테마파크", LatLng(37.400841, 126.808355), R.drawable.intersect, address = "경기 시흥시 하중동 271", description = "놀이터, 벤치")
     ),

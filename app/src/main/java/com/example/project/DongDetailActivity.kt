@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.project.AirQualityResponse
 import com.example.project.databinding.ActivityDongDetailBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -26,6 +25,10 @@ class DongDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var dongName: String
+    private var summaryText: String = ""
+    private var detailText: String = ""
+    private var isExpanded = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,13 +78,12 @@ class DongDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         "군자동" to "군자동",
         "신천동" to "신천동",
         "대야동" to "대야동",
-        "은행동" to "대야동",       // 추정 매핑
-        "과림동" to "대야동",       // 추정 매핑
+        "은행동" to "대야동",
+        "과림동" to "대야동",
         "배곧1동" to "정왕동",
         "배곧2동" to "정왕동",
         "배곧3동" to "정왕동"
     )
-
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -99,87 +101,44 @@ class DongDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             marker?.tag = park.name
         }
 
-        // 🟡 추가한 뷰들
         val parkImage = findViewById<ImageView>(R.id.parkImage)
         val parkInfo = findViewById<TextView>(R.id.parkInfo)
-        val airQualityInfo = findViewById<TextView>(R.id.airQualityInfo)
         val weatherInfo = findViewById<TextView>(R.id.weatherInfo)
-        weatherInfo.text = "" // 초기화
-        fetchWeatherData(center.latitude, center.longitude, weatherInfo)
 
+        weatherInfo.text = ""
+        fetchWeatherData(center.latitude, center.longitude)
 
         mMap.setOnMarkerClickListener { marker ->
             val park = parkMarkers.find { it.name == marker.tag }
             if (park != null) {
-                // 📸 이미지 & 정보 텍스트 초기화
                 parkImage.setImageResource(park.imageResId)
 
                 val infoText = """
-                📍 이름: ${park.name}
-                🏞️ 주소: ${park.address}
-                ℹ️ 설명: ${park.description}
-            """.trimIndent()
+                    📍 이름: ${park.name}
+                    🏞️ 주소: ${park.address}
+                    ℹ️ 설명: ${park.description}
+                """.trimIndent()
                 parkInfo.text = infoText
-
-                // ⛅ 날씨 정보 추가 (아직은 사용 안 하지만 나중 대비)
-                // fetchWeatherData(center.latitude, center.longitude, parkInfo)
-
-                // 🌫️ 미세먼지 정보 따로 출력
-                airQualityInfo.text = "" // 초기화
-                val stationName = stationMap[dongName] ?: "정왕동"
-                fetchAirQualityData(stationName, airQualityInfo)
 
                 bottomSheetBehavior.peekHeight = resources.displayMetrics.heightPixels / 2
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
             false
         }
+        findViewById<TextView>(R.id.weatherInfo).setOnClickListener {
+            isExpanded = !isExpanded
+            it as TextView
+            it.text = if (isExpanded) detailText else summaryText
+        }
+
     }
 
 
+    private fun fetchWeatherData(lat: Double, lon: Double) {
+        val weatherInfo = findViewById<TextView>(R.id.weatherInfo)
+        weatherInfo.text = "날씨 정보를 불러오는 중..."
 
-    private fun fetchAirQualityData(stationName: String, airQualityInfo: TextView) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val api = retrofit.create(AirQualityApiService::class.java)
-
-        val call = api.getAirQuality(
-            serviceKey = "B9+4J6Hkv4PRG2uoZqM6RE/35a6Cwt2n6/u2Szy2+mk+PlBwF807+yHwXlemkjW4iVx2E8W7XVEuKZoZAQeD6Q==",
-            stationName = stationName,
-            dataTerm = "DAILY",
-            returnType = "json",
-            numOfRows = 1,
-            pageNo = 1
-        )
-
-        call.enqueue(object : Callback<AirQualityResponse> {
-            override fun onResponse(call: Call<AirQualityResponse>, response: Response<AirQualityResponse>) {
-                if (response.isSuccessful) {
-                    val item = response.body()?.response?.body?.items?.firstOrNull()
-                    if (item != null) {
-                        val summary = "🌫️ 미세먼지 요약\n- PM10: ${item.pm10Value ?: "정보 없음"}㎍/㎥\n- PM2.5: ${item.pm25Value ?: "정보 없음"}㎍/㎥"
-                        airQualityInfo.text = summary
-                    } else {
-                        airQualityInfo.text = "미세먼지 정보 없음"
-                    }
-                } else {
-                    airQualityInfo.text = "미세먼지 응답 실패"
-                }
-            }
-
-            override fun onFailure(call: Call<AirQualityResponse>, t: Throwable) {
-                airQualityInfo.text = "미세먼지 요청 실패"
-            }
-        })
-    }
-
-
-    private fun fetchWeatherData(lat: Double, lon: Double, weatherInfo: TextView) {
         val (nx, ny) = convertToGrid(lat, lon)
-        Log.d("날씨API", "📍 격자 좌표: nx=$nx, ny=$ny")
 
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
@@ -206,10 +165,9 @@ class DongDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
         call.enqueue(object : Callback<WeatherResponse> {
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
-
                 val items = response.body()?.response?.body?.items?.item
                 if (items.isNullOrEmpty()) {
-                    Log.w("날씨API", "⚠️ 파싱할 항목 없음")
+                    weatherInfo.text = "날씨 정보 없음"
                     return
                 }
 
@@ -236,13 +194,79 @@ class DongDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
 
-                val summary = "☁️ 날씨 요약\n기온: $temp / 습도: $humid / 강수: $rainType / 풍속: $wind"
-                val weatherInfo = findViewById<TextView>(R.id.weatherInfo)
+                val summary = "🌡️ 기온: $temp"
+                val detail = "🌡️ 기온: $temp\n💧 습도: $humid\n☔ 강수: $rainType\n🍃 풍속: $wind"
+
+                summaryText = summary
+                detailText = detail
                 weatherInfo.text = summary
+
+                val stationName = stationMap[dongName] ?: "정왕동"
+                fetchAirQualityData(stationName, weatherInfo)
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                Log.e("날씨API", "❌ 요청 실패: ${t.message}")
+                weatherInfo.text = "날씨 요청 실패"
+            }
+        })
+    }
+
+    private fun fetchAirQualityData(stationName: String, weatherInfo: TextView) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val api = retrofit.create(AirQualityApiService::class.java)
+
+        val call = api.getAirQuality(
+            serviceKey = "B9+4J6Hkv4PRG2uoZqM6RE/35a6Cwt2n6/u2Szy2+mk+PlBwF807+yHwXlemkjW4iVx2E8W7XVEuKZoZAQeD6Q==",
+            stationName = stationName,
+            dataTerm = "DAILY",
+            returnType = "json",
+            numOfRows = 1,
+            pageNo = 1
+        )
+
+        call.enqueue(object : Callback<AirQualityResponse> {
+            override fun onResponse(call: Call<AirQualityResponse>, response: Response<AirQualityResponse>) {
+                val item = response.body()?.response?.body?.items?.firstOrNull()
+                if (item != null) {
+                    val pm10 = item.pm10Value?.toIntOrNull()
+                    val pm25 = item.pm25Value?.toIntOrNull()
+
+                    val pm10Status = when {
+                        pm10 == null -> "정보 없음"
+                        pm10 <= 30 -> "좋음"
+                        pm10 <= 80 -> "보통"
+                        pm10 <= 150 -> "나쁨"
+                        else -> "매우 나쁨"
+                    }
+
+                    val pm25Status = when {
+                        pm25 == null -> "정보 없음"
+                        pm25 <= 15 -> "좋음"
+                        pm25 <= 35 -> "보통"
+                        pm25 <= 75 -> "나쁨"
+                        else -> "매우 나쁨"
+                    }
+
+                    detailText += """
+                        
+- 미세먼지: ${pm10 ?: "정보 없음"}㎍/㎥ ($pm10Status)
+""".trimIndent()
+
+// 현재 화면에 표시 중이라면 update
+                    if (isExpanded) {
+                        weatherInfo.text = detailText
+                    }
+                } else {
+                    weatherInfo.append("\n\n🌫️ 미세먼지 정보 없음")
+                }
+            }
+
+            override fun onFailure(call: Call<AirQualityResponse>, t: Throwable) {
+                weatherInfo.append("\n\n🌫️ 미세먼지 요청 실패")
             }
         })
     }
@@ -304,4 +328,3 @@ class DongDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 }
-

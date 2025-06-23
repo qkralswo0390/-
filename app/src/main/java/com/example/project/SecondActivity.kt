@@ -8,8 +8,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.view.ViewOutlineProvider
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +58,15 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
         // 리스트 데이터 설정
         val recyclerView = findViewById<RecyclerView>(R.id.item_list)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val list = findViewById<RecyclerView>(R.id.item_list)
+
+        toolbar.clipToOutline = true
+        toolbar.outlineProvider = ViewOutlineProvider.BACKGROUND
+
+        list.clipToOutline = true
+        list.outlineProvider = ViewOutlineProvider.BACKGROUND
 
         val items = listOf(
             ListItem("거북섬동"),

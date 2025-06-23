@@ -126,7 +126,6 @@ val parksByDong: Map<String, List<Park>> = mapOf(
     ),
     "목감동" to listOf(
         Park("목감공원", LatLng(37.385607, 126.861246), R.drawable.intersect, address = "경기 시흥시 솔고개길 43", description = "놀이터, 벤치"),
-        Park("꿈자람공원", LatLng(37.419125, 126.791786), R.drawable.intersect, address = "경기 시흥시 미산동 산12-6", description = "놀이터, 벤치")
     ),
     "정왕본동" to listOf(
         Park("정왕1공원", LatLng(37.357191, 126.752204), R.drawable.intersect, address = "정왕동 2246-1", description = "놀이터, 벤치"),
@@ -144,4 +143,7 @@ val parksByDong: Map<String, List<Park>> = mapOf(
         Park("큰솔공원", LatLng(37.343981, 126.75395), R.drawable.intersect, address = "정왕동 1512", description = "놀이터, 벤치"),
         Park("죽율체육공원", LatLng(37.349045, 126.76007), R.drawable.intersect, address = "죽율동 610", description = "놀이터, 벤치")
     ),
+    "신현동" to listOf(
+        Park("신현솔숲공원", LatLng(37.419125, 126.791786), R.drawable.intersect, address = "경기 시흥시 미산동 산12-6", description = "놀이터, 벤치")
+    )
 )

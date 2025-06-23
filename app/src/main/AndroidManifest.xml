@@ -22,24 +22,6 @@
         <activity
             android:name=".YouthParkActivity"
             android:exported="false" />
-        <activity
-            android:name=".maehwa"
-            android:exported="false" />
-        <activity
-            android:name=".eunhaeng"
-            android:exported="false" />
-        <activity
-            android:name=".sinhyeon"
-            android:exported="false" />
-        <activity
-            android:name=".daeya"
-            android:exported="false" />
-        <activity
-            android:name=".Daeya"
-            android:exported="false" />
-        <activity
-            android:name=".jeongwang"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

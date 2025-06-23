@@ -102,6 +102,12 @@
             android:scaleType="centerCrop"
             android:src="@drawable/intersect" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"/>
+
         <!-- 공원 정보 -->
         <TextView
             android:id="@+id/parkInfo"
@@ -111,6 +117,24 @@
             android:paddingBottom="16dp"
             android:textSize="18sp"
             android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/airQualityInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/weatherInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 

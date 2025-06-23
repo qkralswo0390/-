@@ -13,10 +13,10 @@ data class Park(
 // 각 동별 공원 리스트를 담은 Map
 val parksByDong: Map<String, List<Park>> = mapOf(
     "정왕1동" to listOf(
-        Park("소망공원", LatLng(37.333493, 126.725643), R.drawable.intersect, address = "정왕동 1368-37", description = "놀이터, 벤치"),
+        Park("소망공원", LatLng(37.333493, 126.725643), R.drawable.intersect, address = "정왕동 1368-37", description = "족구장, 풋살장, 정자, 벤치, 야구장"),
         Park("새싹공원", LatLng(37.340062, 126.7512), R.drawable.intersect, address = "정왕동 1412-9", description = "놀이터, 벤치"),
-        Park("꿈동산공원", LatLng(37.342427, 126.748022), R.drawable.intersect, address = "정왕동 1569-10", description = "놀이터, 벤치"),
-        Park("군서공원", LatLng(37.344543, 126.74559), R.drawable.intersect, address = "정왕동 1581", description = "놀이터, 벤치"),
+        Park("꿈동산공원", LatLng(37.342427, 126.748022), R.drawable.intersect, address = "정왕동 1569-10", description = "놀이터, 벤치, 정자"),
+        Park("군서공원", LatLng(37.344543, 126.74559), R.drawable.intersect, address = "정왕동 1581", description = "놀이터, 벤치, 정자 다수"),
         Park("젊음과패기공원", LatLng(37.348403, 126.74004), R.drawable.intersect, address = "정왕동 1800-5", description = "놀이터, 벤치"),
         Park("평안공원", LatLng(37.339471, 126.741545), R.drawable.intersect, address = "정왕동 1787-4", description = "놀이터, 벤치")
     ),
@@ -105,7 +105,7 @@ val parksByDong: Map<String, List<Park>> = mapOf(
         Park("배곧한울공원", LatLng(37.356174, 126.703721), R.drawable.intersect, address = "경기 시흥시 배곧동 307", description = "놀이터, 벤치")
     ),
     "거북섬동" to listOf(
-        Park("나래솔근린공원", LatLng(37.323435, 126.704199), R.drawable.intersect, address = "정왕동 2606-3", description = "놀이터, 벤치"),
+        Park("나래솔근린공원", LatLng(37.323435, 126.704199), R.drawable.intersect, address = "정왕동 2606-3", description = "농구장, 벤치, 자전거도로"),
         Park("해미공원", LatLng(37.324815, 126.697120), R.drawable.intersect, address = "정왕동 2647", description = "놀이터, 벤치"),
         Park("오이도기념공원", LatLng(37.335034, 126.690486), R.drawable.intersect, address = "정왕동 2202-6", description = "놀이터, 벤치")
     ),
@@ -122,10 +122,11 @@ val parksByDong: Map<String, List<Park>> = mapOf(
         Park("샛말공원", LatLng(37.396032, 126.804400), R.drawable.intersect, address = "경기 시흥시 하중동 848", description = "놀이터, 벤치"),
         Park("성마루공원", LatLng(37.390926, 126.805560), R.drawable.intersect, address = "경기 시흥시 하중동 880-2", description = "놀이터, 벤치"),
         Park("관곡공원", LatLng(37.399719, 126.800639), R.drawable.intersect, address = "경기 시흥시 하중동 826-2", description = "놀이터, 벤치"),
-        Park("연꽃테마파크", LatLng(37.400841, 126.808355), R.drawable.intersect, address = "경기 시흥시 하중동 271", description = "놀이터, 벤치")
+        Park("연꽃테마파크", LatLng(37.400841, 126.808355), R.drawable.intersect, address = "경기 시흥시 하중동 271", description = "놀이터, 벤치"),
+        Park("신현솔숲공원", LatLng(37.419125, 126.791786), R.drawable.intersect, address = "경기 시흥시 미산동 산12-6", description = "놀이터, 벤치")
     ),
     "목감동" to listOf(
-        Park("목감공원", LatLng(37.385607, 126.861246), R.drawable.intersect, address = "경기 시흥시 솔고개길 43", description = "놀이터, 벤치"),
+        Park("목감공원", LatLng(37.385607, 126.861246), R.drawable.intersect, address = "경기 시흥시 솔고개길 43", description = "놀이터, 벤치")
     ),
     "정왕본동" to listOf(
         Park("정왕1공원", LatLng(37.357191, 126.752204), R.drawable.intersect, address = "정왕동 2246-1", description = "놀이터, 벤치"),
@@ -142,8 +143,5 @@ val parksByDong: Map<String, List<Park>> = mapOf(
         Park("별공원", LatLng(37.34574, 126.751036), R.drawable.intersect, address = "정왕동 1192-1", description = "놀이터, 벤치"),
         Park("큰솔공원", LatLng(37.343981, 126.75395), R.drawable.intersect, address = "정왕동 1512", description = "놀이터, 벤치"),
         Park("죽율체육공원", LatLng(37.349045, 126.76007), R.drawable.intersect, address = "죽율동 610", description = "놀이터, 벤치")
-    ),
-    "신현동" to listOf(
-        Park("신현솔숲공원", LatLng(37.419125, 126.791786), R.drawable.intersect, address = "경기 시흥시 미산동 산12-6", description = "놀이터, 벤치")
     )
 )

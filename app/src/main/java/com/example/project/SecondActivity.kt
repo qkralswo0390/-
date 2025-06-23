@@ -66,6 +66,7 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
             ListItem("배곧1동"),
             ListItem("배곧2동"),
             ListItem("신천동"),
+            ListItem("신현동"),
             ListItem("연성동"),
             ListItem("은행동"),
             ListItem("장곡동"),

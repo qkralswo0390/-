@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">30sp</item> <!-- 원하는 크기 -->
+        <item name="android:fontFamily">@font/cattype</item> <!-- 선택 사항 -->
+    </style>
+</resources>

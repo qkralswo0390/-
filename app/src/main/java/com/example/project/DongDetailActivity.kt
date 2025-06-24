@@ -228,6 +228,16 @@ class DongDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 """.trimIndent()
                 parkInfo.text = infoText
 
+                val mapView = (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).view
+                mapView?.post {
+                    val screenHeight = resources.displayMetrics.heightPixels
+                    val offset = screenHeight / 6
+                    val projection = mMap.projection
+                    val markerPoint = projection.toScreenLocation(marker.position)
+                    markerPoint.y += offset
+                    val newLatLng = projection.fromScreenLocation(markerPoint)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(newLatLng))
+                }
                 bottomSheetBehavior.peekHeight = resources.displayMetrics.heightPixels / 2
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }

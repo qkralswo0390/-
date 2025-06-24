@@ -27,6 +27,7 @@
         android:layout_marginLeft="20dp"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,6 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="365dp"
         android:background="@drawable/rounded_bg2"
+        android:textSize="25sp"
         android:padding="8dp"
         app:layout_constraintTop_toBottomOf="@id/map"
         app:layout_constraintBottom_toBottomOf="parent"

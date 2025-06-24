@@ -77,7 +77,6 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
             ListItem("배곧1동"),
             ListItem("배곧2동"),
             ListItem("신천동"),
-            ListItem("신현동"),
             ListItem("연성동"),
             ListItem("은행동"),
             ListItem("장곡동"),
@@ -85,7 +84,8 @@ class SecondActivity : AppCompatActivity(), OnMapReadyCallback {
             ListItem("정왕2동"),
             ListItem("정왕3동"),
             ListItem("정왕4동"),
-            ListItem("정왕본동")
+            ListItem("정왕본동"),
+            ListItem("미산동")
         )
 
         val adapter = SimpleItemAdapter(items) { item ->
